@@ -13,6 +13,7 @@ export interface ButtonProps {
   text: string;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   active?: any;
+  marginRight?: string;
 }
 
 // 기본 버튼
@@ -27,6 +28,7 @@ const Button: React.FC<ButtonProps> = ({
   onClick,
   fontSize,
   fontWeight,
+  marginRight,
 }) => {
   return (
     <S.StyledButton
@@ -38,6 +40,7 @@ const Button: React.FC<ButtonProps> = ({
       onClick={onClick}
       style={{ fontSize, fontWeight }}
       textColor={textColor}
+      marginRight={marginRight}
     >
       {text}
     </S.StyledButton>

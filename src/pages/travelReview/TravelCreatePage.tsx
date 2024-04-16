@@ -12,13 +12,13 @@ import { useNavigate } from 'react-router-dom';
 import Button from '@/components/commons/buttons/Button';
 
 interface TravelCreateFormProps {
-  email: string;
+  // email: string;
   tripData: TripData;
   imageList: File[];
 }
 
 export interface CreateTripRequest {
-  email: string;
+  // email: string;
   formData: FormData;
 }
 
@@ -34,7 +34,7 @@ const TravelCreateForm: React.FC<TravelCreateFormProps> = () => {
   const [isPublic, setIsPublic] = useState<boolean>(true);
   const [imageFiles, setImageFiles] = useState<File[]>([]);
 
-  const email = 'test@test.com';
+  // const email = 'test@test.com';
 
   const createReviewMutation = useMutation({
     mutationFn: createTrip,
@@ -63,10 +63,6 @@ const TravelCreateForm: React.FC<TravelCreateFormProps> = () => {
       hashTag: hashtags,
       address: 'string',
       isPublic,
-      // area,
-      // placeName: 'string',
-      // x: '100.123123',
-      // y: '100.123123',
     };
 
     const formData = new FormData();
@@ -81,21 +77,9 @@ const TravelCreateForm: React.FC<TravelCreateFormProps> = () => {
       formData.append('imageList', file);
     });
 
-    // 첫 번째 이미지를 썸네일로, 나머지를 별도의 배열로 구분
-    // const thumbnail = imageFiles[0];
-    // const remainingImages = imageFiles.slice(1);
-
-    // formData.append('email', email);
-    // formData.append('tripData', JSON.stringify(tripData));
-    // formData.append('thumbnail', thumbnail);
-
-    // remainingImages.forEach((file, index) => {
-    //   formData.append(`images[${index}]`, file);
-    // });
     // mutate 함수에 전달할 객체 생성
     const request: CreateTripRequest = {
-      email, // 이메일 주소
-      formData, // FormData 객체
+      formData,
     };
     // mutate 호출 //
     createReviewMutation.mutate(request);
@@ -108,8 +92,8 @@ const TravelCreateForm: React.FC<TravelCreateFormProps> = () => {
   const handleAddHashtag = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && event.currentTarget.value !== '') {
       setHashtags([...hashtags, event.currentTarget.value]);
-      event.currentTarget.value = ''; // 입력 필드 초기화
-      event.preventDefault(); // 폼 제출 방지
+      event.currentTarget.value = '';
+      event.preventDefault();
     }
   };
   // 해시태그를 삭제

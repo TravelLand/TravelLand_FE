@@ -22,7 +22,7 @@ export const CardContainer = styled.div`
 export const ImageContainer = styled.div`
   width: 260px;
   height: 250px;
-  border: 1px solid #000;
+  /* border: 1px solid #000; */
   border-radius: 15px;
   margin-bottom: 10px;
 
@@ -30,7 +30,7 @@ export const ImageContainer = styled.div`
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 4px;
+    border-radius: 15px;
   }
 `;
 

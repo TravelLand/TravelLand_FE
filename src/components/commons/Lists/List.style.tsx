@@ -43,10 +43,67 @@ const ListCity = styled.div`
   font-weight: bold;
 `;
 
-const ListTitle = styled.div`
-  padding: 5px 20px;
-  /* width: 350px; */
-  align-content: center;
+const DoubleColumnContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  /* padding: 5px; */
 `;
 
-export { ListContainer, ListCity, ListLeft, ListRight, ListSection, ListTitle };
+const Column = styled.div`
+  width: 500px; // 각 컬럼이 전체 너비의 약 절반을 차지하도록 설정
+  height: 500px;
+`;
+
+const ListItem = styled.div`
+  display: flex; // 수평 정렬
+  align-items: center; // 세로 중앙 정렬
+  border-bottom: 1px solid #eaeaea; // 아이템 사이의 구분선
+  padding: 20px 0; // 아이템 내부의 패딩
+  justify-content: space-between;
+`;
+
+const ListTitle = styled.div`
+  font-size: 18px;
+  font-weight: bold;
+  align-content: center;
+  cursor: pointer;
+  color: black;
+`;
+
+const ListLeftIcon = styled.div`
+  padding-right: 15px;
+  img {
+    width: 15px;
+    height: 20px;
+  }
+`;
+
+const ListItemLeft = styled.div`
+  width: 100%;
+  /* padding: 5px 0px; */
+  color: gray;
+  font-size: 16px;
+  div {
+    padding: 5px 0px;
+  }
+`;
+
+const ListItemRight = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export {
+  ListContainer,
+  ListCity,
+  ListLeft,
+  ListRight,
+  ListSection,
+  ListTitle,
+  DoubleColumnContainer,
+  Column,
+  ListItem,
+  ListItemLeft,
+  ListLeftIcon,
+  ListItemRight,
+};

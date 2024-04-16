@@ -8,10 +8,9 @@ import {
 import { CreateTripRequest } from '@/pages/travelReview/TravelCreatePage';
 
 // 여행 정보 등록
-export const createTrip = async ({ email, formData }: CreateTripRequest) => {
+export const createTrip = async ({ formData }: CreateTripRequest) => {
   try {
     const response = await instanceWithToken.post('/v1/trips', formData, {
-      params: { email },
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -24,9 +23,7 @@ export const createTrip = async ({ email, formData }: CreateTripRequest) => {
 };
 
 // 여행 정보 목록 조회
-export const getTripList = async (
-  tripListparam: TripListParams,
-): Promise<AxiosResponse<any>> => {
+export const getTripList = async (tripListparam: TripListParams) => {
   const { page, size, sortBy, isAsc } = tripListparam;
   try {
     const response = await instance.get('/v1/trips', {
@@ -42,7 +39,6 @@ export const getTripList = async (
 // 여행 정보 수정
 export const updateTrip = async (
   tripId: number,
-  email: string,
   tripData: TripData,
   imageList?: File[],
 ): Promise<AxiosResponse<any>> => {
@@ -62,7 +58,6 @@ export const updateTrip = async (
       `/v1/trips/${tripId}`,
       formData,
       {
-        params: { email },
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -96,7 +91,7 @@ export const deleteTrip = async (
   tripId: number,
 ): Promise<AxiosResponse<any>> => {
   try {
-    const response = await instance.delete(`/v1/trips/${tripId}`);
+    const response = await instanceWithToken.delete(`/v1/trips/${tripId}`);
     return response;
   } catch (error) {
     console.error(error);

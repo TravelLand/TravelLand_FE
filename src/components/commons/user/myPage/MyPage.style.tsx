@@ -1,5 +1,59 @@
 import styled, { css } from 'styled-components';
 
+const MyPageContainer = styled.div`
+  display: flex;
+`;
+
+const UserInfoContainer = styled.div`
+  border-radius: 25px;
+  border: 1px solid lightgray;
+  height: 100px;
+
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: center;
+
+  padding: 0px 15px;
+  margin: 15px 10px;
+
+  width: 65%;
+  img {
+    /* border: 1px solid black; */
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    margin-right: 15px;
+  }
+
+  button {
+    background-color: white;
+    border: 1px solid lightgray;
+    border-radius: 25px;
+    width: 130px;
+    height: 35px;
+  }
+`;
+
+const UserInfoCotent = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+const UserOtherInfoContainer = styled.div`
+  width: 35%;
+  border: 1px solid lightgray;
+  border-radius: 25px;
+  height: 100px;
+  padding: 0px 15px;
+  margin: 15px 10px;
+`;
+
+const UserInfoContentName = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const MyPagePagination = styled.div`
   display: flex;
   flex-direction: row;
@@ -17,9 +71,6 @@ const MyPagePagination = styled.div`
 const MyPageTabStyle = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  border: 1px solid lightgray;
-  border-radius: 5px;
   padding: 2px;
 `;
 
@@ -39,7 +90,7 @@ const MyPageTabButton = styled.button<{ isActive: boolean }>`
   font-size: 16px;
   font-weight: bold;
 
-  width: 400px;
+  /* width: 400px; */
   height: 45px;
 
   cursor: pointer;
@@ -47,8 +98,9 @@ const MyPageTabButton = styled.button<{ isActive: boolean }>`
   ${({ isActive }) =>
     isActive &&
     css`
-      background-color: black;
-      color: white;
+      width: 150px;
+      border-bottom: 1px solid black;
+      /* color: white; */
     `}
 `;
 
@@ -60,9 +112,14 @@ const MyPageInvitedContainer = styled.div`
 `;
 
 export {
+  UserInfoContentName,
+  MyPageContainer,
+  UserInfoContainer,
+  UserInfoCotent,
   MyPagePagination,
   MyPageTabStyle,
   MyPageButton,
   MyPageTabButton,
   MyPageInvitedContainer,
+  UserOtherInfoContainer,
 };

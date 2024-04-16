@@ -8,7 +8,7 @@ const MyPage = () => {
       <Header />
       <S.MyPageStyle>
         {/* 타이틀 */}
-        <h2>마이 페이지</h2>
+        <h1>마이 페이지</h1>
         <MyPageIndex />
       </S.MyPageStyle>
     </>

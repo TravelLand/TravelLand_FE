@@ -9,6 +9,7 @@ export interface CardProps {
   city?: string;
   withPicture?: boolean;
   borderColor?: string;
+  imageUrl?: string;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 
@@ -19,13 +20,14 @@ const Card: React.FC<CardProps> = ({
   city,
   withPicture,
   onClick,
+  imageUrl,
 }) => {
   return (
     <>
       {/* 이미지 박스 */}
       <S.CardBox onClick={onClick}>
         <div>
-          <S.CardImg src={'/assets/paris.jpg'} />
+          <S.CardImg src={imageUrl || '/assets/paris.jpg'} alt="Card Image" />
         </div>
         {/* 여행 정보*/}
         <S.CardInfo>

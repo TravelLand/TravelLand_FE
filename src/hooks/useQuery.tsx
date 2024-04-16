@@ -1,6 +1,7 @@
-import { getDayPlanId, getPlanDetail, getPlanList } from '@/api/planAxios';
+import { getPlanDetail, getPlanList } from '@/api/planAxios';
 import { useQuery } from '@tanstack/react-query';
 import { PlanListParams } from '@/api/interfaces/planInterface';
+// import { getMyPlanList } from '@/api/userAxios';
 
 export const usePlanListQuery = (planListParams: PlanListParams) => {
   return useQuery({
@@ -22,9 +23,10 @@ export const usePlanDetailQuery = (planId: number) => {
   });
 };
 
-export const useDayPlanIdQuery = (planId: number) => {
-  return useQuery({
-    queryKey: ['planDetail', planId],
-    queryFn: () => getDayPlanId(planId),
-  });
-};
+// export const useMyPlanListQuery = (planListParams: PlanListParams) => {
+//   return useQuery({
+//     queryKey: ['myPlanList', planListParams],
+//     queryFn: () => getMyPlanList(planListParams),
+//     staleTime: 0, // 새로고침 주기를 빠르게 하려면 0으로 설정
+//   });
+// };

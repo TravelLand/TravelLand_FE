@@ -31,7 +31,7 @@ const ReviewDetailHeader = ({ tripDetail }: ReviewDetailHeaderProps) => {
   });
 
   const handleDelete = (tripId: number) => {
-    deleteReviewMutation.mutate(tripId); // tripId를 전달하여 mutate 메서드를 호출합니다.
+    deleteReviewMutation.mutate(tripId);
   };
 
   // 여기자나여 => 여기가 썸네일 이미지 구간

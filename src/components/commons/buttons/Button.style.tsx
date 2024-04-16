@@ -7,6 +7,7 @@ interface ButtonProps {
   borderColor: string;
   borderRadius?: string;
   textColor?: string;
+  marginRight?: string;
 }
 
 export const StyledButton = styled.button<ButtonProps>`
@@ -20,6 +21,7 @@ export const StyledButton = styled.button<ButtonProps>`
   font-size: 16px;
   text-align: center;
   text-decoration: none;
+  margin-right: ${(props) => props.marginRight || '0px'};
 `;
 
 export const ButtonContainer = styled.div`

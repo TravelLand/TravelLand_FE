@@ -5,6 +5,10 @@ import { usePlanDetailQuery } from '@/hooks/useQuery';
 import { useParams } from 'react-router-dom';
 import Button from '@/components/commons/buttons/Button';
 import { useDeleteMutation } from '@/hooks/useMutation';
+import InvitationCard from '@/components/commons/cards/InvitationCard';
+import { FaLocationDot } from 'react-icons/fa6';
+import { CiHeart, CiBookmark, CiCirclePlus } from 'react-icons/ci';
+import { Invitation } from '@/components/commons/invitation/Invitation';
 
 // 사용할 데이터 타입 정의 (예시입니다, 실제 데이터에 맞게 조정해야 합니다.)
 
@@ -39,7 +43,9 @@ const PlanDetail: React.FC<ButtonProps> = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [dayPlans, setDayPlans] = useState<DayPlan[]>([]);
-  const [address, setAddress] = useState<string>(''); // 예시 주소를 빈 문자열로 초기화
+  const [address, setAddress] = useState<string>(''); // 예시 주소를 빈 문자열로 초기화// ...기존의 useState와 useEffect 로직...
+  const [isInvitationModalOpen, setIsInvitationModalOpen] = useState(false); // 초대 모달 상태를 관리하는 useState
+
   0; // 현재 스텝 인덱스를 0으로 초기화
 
   // `id`를 숫자로 변환하기 전에 유효성 검사 수행
@@ -52,7 +58,7 @@ const PlanDetail: React.FC<ButtonProps> = () => {
       setDayPlans(planDetails.dayPlans);
     }
   }, [planDetails]);
-
+  console.log('planDetails > ', planDetails);
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('ko-KR', {
@@ -61,7 +67,6 @@ const PlanDetail: React.FC<ButtonProps> = () => {
       day: 'numeric',
     });
   };
-  const selectedDayPlan = dayPlans[currentStep];
 
   const handleStepClick = (stepIndex: number) => {
     setCurrentStep(stepIndex);
@@ -72,6 +77,18 @@ const PlanDetail: React.FC<ButtonProps> = () => {
     setIsModalOpen(true);
   };
 
+  // 좋아요 기능
+  const handleLikeClick = () => {};
+
+  // 좋아요 기능
+  const handleScrapClick = () => {};
+
+  // 수정 기능
+  // const deleteMutaion = useDeleteMutation();
+
+  const handlePlanUpdate = () => {
+    // deleteMutaion.mutate(planId);
+  };
   // 삭제 기능
   const deleteMutaion = useDeleteMutation();
 
@@ -82,30 +99,31 @@ const PlanDetail: React.FC<ButtonProps> = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-  // 초대하기 모달 오픈 핸들러
+
+  // 초대하기 모달을 여는 함수
   const handleOpenInvitation = () => {
-    // setIsInvitationModalOpen(true);
-    alert('개발중입니다.');
+    setIsInvitationModalOpen(true); // 초대 모달 상태를 true로 설정
   };
 
-  // const closeInvitationModal = () => {
-  //   setIsInvitationModalOpen(false);
-  // };
-  // // 초대하기 버튼 클릭 시 호출될 함수
-  // const handleInvite = () => {
-  //   // 초대 로직 구현
-  //   // 초대된 사람을 invitedPeople 상태에 추가
-  //   // 모달 닫기
-  //   setIsInvitationModalOpen(false);
-  // };
+  // 초대하기 모달을 닫는 함수
+  const closeInvitationModal = () => {
+    setIsInvitationModalOpen(false); // 초대 모달 상태를 false로 설정
+  };
 
+  // 초대하기 로직
+  const handleInvite = () => {
+    // 초대 로직 구현 필요
+    console.log('초대하기 로직 실행');
+    closeInvitationModal(); // 초대 후 모달 닫기
+  };
   // 초대한 사람 삭제
-  // const handleDeleteClick = (index: number) => {
-  //   // 초대된 사람들 배열에서 해당 인덱스의 항목을 제거
-  //   const updatedInvitedPeople = [...invitedPeople];
-  //   updatedInvitedPeople.splice(index, 1);
-  //   setInvitedPeople(updatedInvitedPeople);
-  // };
+  const handleDeleteClick = (index: number) => {
+    console.log(index);
+    // 초대된 사람들 배열에서 해당 인덱스의 항목을 제거
+    // const updatedInvitedPeople = [...invitedPeople];
+    // updatedInvitedPeople.splice(index, 1);
+    // setInvitedPeople(updatedInvitedPeople);
+  };
 
   if (isLoading) {
     // 데이터 로딩 중 UI
@@ -119,79 +137,108 @@ const PlanDetail: React.FC<ButtonProps> = () => {
 
   return (
     <>
-      {/* 여행 일자 박스 영역 */}
-      <S.PlanDetailDateBox>
-        {dayPlans.map((_plan, index) => (
-          <S.PlanDetailDateButton
-            key={index}
-            onClick={() => handleStepClick(index)}
-            // active={index === currentStep} // 조건부 스타일링 적용
-            // text=""
-          >
-            {`${index + 1}일차`}
-          </S.PlanDetailDateButton>
-        ))}
-      </S.PlanDetailDateBox>
-      {/* 스태퍼 박스 영역 */}
-      <S.PlanDetailContentBox>
+      <S.PlanDetailContainer>
         <S.PlanDetailContentHeader>
-          <S.DetailHeaderContent>{`${currentStep + 1}일차`}</S.DetailHeaderContent>
-          <S.DetailHeaderSubContent>
-            <S.DetailHeaderSubDate>
-              {formatDate(selectedDayPlan?.date)}
-            </S.DetailHeaderSubDate>
-            |
-            <S.DetaiHeaderSubDestination>
-              {selectedDayPlan?.startAddress} , {selectedDayPlan?.endAddress}
-            </S.DetaiHeaderSubDestination>
-          </S.DetailHeaderSubContent>
+          <S.DetailHeaderContent>
+            <div>
+              {planDetails.area} | {planDetails.tripStartDate} -{' '}
+              {planDetails.tripEndDate} | 예산{' '}
+              {planDetails.budget.toLocaleString()} 원
+            </div>
+            <S.DetailPlanContentCity>
+              {planDetails.title}
+            </S.DetailPlanContentCity>
+          </S.DetailHeaderContent>
+          <div>
+            <CiHeart size="30px" onClick={handleLikeClick} />
+            <CiBookmark size="30px" onClick={handleScrapClick} />
+          </div>
         </S.PlanDetailContentHeader>
-        <S.DetailContentSection>
-          <S.DetailContentBox>
-            {dayPlans[currentStep]?.unitPlans.map((unitPlan, index) => (
-              <div key={index}>
-                {/* 순서 */}
-                <S.DetailPlanNumber>{index + 1}</S.DetailPlanNumber>
+        <S.DetailHeaderThirdContent>
+          <div>
+            <img src={`${planDetails.profileUrl}`} />
+            {planDetails.memberNickname}
+          </div>
+          <div>
+            <Button
+              onClick={handlePlanUpdate}
+              text={'수정하기'}
+              borderColor="lightGray"
+              marginRight="5px"
+            />
+            <Button
+              onClick={handlePlanDelete}
+              text={'삭제하기'}
+              borderColor="lightGray"
+            />
+          </div>
+        </S.DetailHeaderThirdContent>
+        <hr />
+        {/* 여행 일자 박스 영역 */}
 
-                <S.DetailPlanContent>
-                  <S.DetailPlanContentCity>
-                    {unitPlan.title}
-                  </S.DetailPlanContentCity>
-                  <S.DetailContentItem>
+        {/* 스태퍼 박스 영역 */}
+        <S.PlanDetailDateBox>
+          {dayPlans.map((dayPlan, index) => (
+            <S.PlanDetailDateButton
+              key={index}
+              onClick={() => handleStepClick(index)}
+              isActive={currentStep === index}
+            >
+              {`${index + 1}일차`}
+              {currentStep === index && (
+                <>
+                  <hr />
+                  <div>{formatDate(dayPlan.date)}</div>
+                </>
+              )}
+            </S.PlanDetailDateButton>
+          ))}
+        </S.PlanDetailDateBox>
+        {/* 스태퍼 박스 영역 */}
+        <div>
+          {dayPlans[currentStep]?.unitPlans.map((unitPlan, index) => (
+            <S.DetailContentBox key={index}>
+              {/* 순서 */} <S.DetailPlanNumber>{index + 1}</S.DetailPlanNumber>
+              <S.PlanDetailContentBox>
+                <S.DetailPlanContentCity>
+                  {unitPlan.title}
+                </S.DetailPlanContentCity>
+                <S.DetailContentItem>
+                  <S.DetailContent>
                     <div>
-                      <div>{unitPlan.title}</div>
-                      <div>{unitPlan.content}</div>
-                      <div>{unitPlan.time}</div>
-                      <img src="/assets/icons/pin.png" alt="pin" />
-                      {unitPlan.address}
+                      {unitPlan.time} {unitPlan.content}
                     </div>
-                    <div>
-                      {/* 이 부분에 지도 버튼 추가 및 클릭 이벤트 핸들러 연결 */}
-                      <S.DetailButtonDiv
-                        onClick={() => handleOpenMapClick(unitPlan.address)}
-                      >
-                        <img src="/assets/icons/pin.png" alt="pin" />
-                        {unitPlan.address}
-                      </S.DetailButtonDiv>
-                    </div>
-                  </S.DetailContentItem>
-                </S.DetailPlanContent>
-              </div>
-            ))}
-          </S.DetailContentBox>
-          <Button onClick={handlePlanDelete} text={'삭제하기'} />
-        </S.DetailContentSection>
-        {/*초대 */}
-        <S.PlanBox>
-          <img src="/assets/icons/plus.png" />
-          <S.PlanHorizontalContent>
-            <div>초대하기</div>
+                    <div>{unitPlan.budget.toLocaleString()}원</div>
+                  </S.DetailContent>
+                  <S.DetailLocationBox>
+                    {/* 이 부분에 지도 버튼 추가 및 클릭 이벤트 핸들러 연결 */}
+                    <S.DetailButtonDiv
+                      onClick={() => handleOpenMapClick(unitPlan.address)}
+                    >
+                      <FaLocationDot size="25px" color="white" />{' '}
+                    </S.DetailButtonDiv>{' '}
+                    <div>{unitPlan.address}</div>
+                  </S.DetailLocationBox>
+                </S.DetailContentItem>
+              </S.PlanDetailContentBox>
+            </S.DetailContentBox>
+          ))}
+
+          {/*초대 */}
+          <S.DetailContentBox>
+            <S.ButtonBox>
+              <S.InvitationDiv>
+                함께할 동행자를 초대해주세요{' '}
+                <InvitationCard
+                  src={'/assets/paris.jpg'}
+                  onClick={() => handleDeleteClick(1)}
+                />
+                <CiCirclePlus size="35px" onClick={handleOpenInvitation} />
+              </S.InvitationDiv>
+            </S.ButtonBox>
             <S.PlanInvitationBox>
               {/* 초대된 사람들 노출 및 삭제 구간 */}
-              {/* <InvitationCard
-                src={'/assets/paris.jpg'}
-                onClick={() => handleDeleteClick(1)}
-              /> */}
+
               {/* {invitedPeople.map((person, index) => (
                 <InvitationCard
                   key={index}
@@ -200,23 +247,17 @@ const PlanDetail: React.FC<ButtonProps> = () => {
                 />
               ))} */}
             </S.PlanInvitationBox>
-            <div>
-              <img
-                src="/assets/icons/blackBackgroundPlus.png"
-                onClick={handleOpenInvitation}
-              />
-            </div>
-          </S.PlanHorizontalContent>
-        </S.PlanBox>
-      </S.PlanDetailContentBox>
+          </S.DetailContentBox>
+        </div>
+      </S.PlanDetailContainer>
       {/*  지도 모달 */}
       <Map isOpen={isModalOpen} onClose={closeModal} address={address} />
       {/* 초대하기 모달 처리 */}
-      {/* <Invitation
+      <Invitation
         isOpen={isInvitationModalOpen}
         onClose={closeInvitationModal}
         onInvite={handleInvite} // 초대하기 버튼 클릭 시 호출될 함수 전달
-      /> */}
+      />
     </>
   );
 };

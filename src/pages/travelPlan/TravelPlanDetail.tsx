@@ -8,7 +8,6 @@ const TravelPlanDetail = () => {
       <Header />
       <S.TravelPlanMainStyle>
         {/* 타이틀 */}
-        <h2>여행 플랜</h2>
         <PlanDetail
           active={false}
           text={''}

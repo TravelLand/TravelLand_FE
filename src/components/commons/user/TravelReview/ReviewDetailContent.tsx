@@ -62,16 +62,18 @@ const Container = styled.div`
 `;
 
 const ContentBox = styled.div`
-  height: 300px;
+  min-height: 350px;
+  overflow: auto;
 `;
 
 const ContentDiv = styled.p`
-  width: 400px;
+  width: 85%;
   font-size: 16px;
   font-size: 16px;
   line-height: 1.6;
   margin-bottom: 1em;
   white-space: pre-line;
+  word-wrap: break-word;
 `;
 
 const CommentsList = styled.ul`

@@ -7,6 +7,7 @@ import { useLocation } from 'react-router-dom';
 import { ModernInput } from '@/components/commons/inputs/Input';
 import KaKaoMap from '@/components/maps/KaKaoMap';
 import { useCreatePlanMutaton } from '@/hooks/useMutation';
+import { TfiArrowCircleRight } from 'react-icons/tfi';
 
 export interface UnitPlan {
   title: string;
@@ -53,6 +54,9 @@ const PlanCreate2: React.FC = () => {
   // useState부분
   const [currentStep, setCurrentStep] = useState<number>(0);
 
+  // Initializing displayDate
+  const [, setDisplayDate] = useState<string>(formatDate(tripStartDate));
+
   const [unitPlans, setUnitPlans] = useState<UnitPlan[]>([
     {
       title: '',
@@ -90,14 +94,14 @@ const PlanCreate2: React.FC = () => {
     const totalDays = Math.ceil(diff / (1000 * 3600 * 24)) + 1; // 종료 날짜 포함
     return totalDays;
   };
-
   // 상태를 초기화하는 부분에서 함수를 호출
   const [totalDays, setTotalDays] = useState(calculateTotalDays());
 
   // startDate와 currentStep을 기반으로 해당 일차의 날짜 계산
   const calculateDateForStep = (start: string | Date, step: number): string => {
     const resultDate = new Date(start);
-    resultDate.setDate(resultDate.getDate() + step);
+
+    resultDate.setDate(resultDate.getDate() + step + 1); // step이 0부터 시작으로 0인 경우 전일이 보여서 수정
     return formatDate(resultDate);
   };
 
@@ -107,9 +111,6 @@ const PlanCreate2: React.FC = () => {
       unitPlans: [],
     },
   ]);
-
-  // 각 일차의 날짜를 보여주는 부분을 업데이트
-  const displayDate = calculateDateForStep(tripStartDate, currentStep);
 
   useEffect(() => {
     setTotalDays(calculateTotalDays());
@@ -162,8 +163,6 @@ const PlanCreate2: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  const createPlanList = useCreatePlanMutaton();
-
   // 추가하기 버튼
   const handlePlanAdd = () => {
     // 현재 unitPlans에 새 UnitPlan 추가
@@ -196,6 +195,13 @@ const PlanCreate2: React.FC = () => {
   // handleDayChange 함수 내에서 currentStep 업데이트 로직 확인 및 최적화
   const handleDayChange = (stepIndex: number) => {
     const currentUnitPlans = [...unitPlans];
+    console.log('Changing day to:', stepIndex);
+
+    const newDisplayDate = calculateDateForStep(tripStartDate, stepIndex);
+    console.log('New display date:', newDisplayDate);
+
+    setDisplayDate(newDisplayDate);
+    setCurrentStep(stepIndex);
 
     // 새로운 dayPlans 배열을 준비합니다. 기존 dayPlans를 복사합니다.
     let newDayPlans = [...dayPlans];
@@ -231,6 +237,8 @@ const PlanCreate2: React.FC = () => {
       },
     ]);
   };
+
+  const createPlanList = useCreatePlanMutaton();
 
   // 등록하기 버튼
   const handlePlanSubmit = () => {
@@ -285,27 +293,22 @@ const PlanCreate2: React.FC = () => {
           <S.PlanDetailDateButton
             key={index}
             onClick={() => handleDayChange(index)}
+            isActive={currentStep === index}
           >
             {`${index + 1}일차`}
+            {currentStep === index && (
+              <>
+                <hr />
+                <div>{calculateDateForStep(tripStartDate, index)}</div>
+              </>
+            )}
           </S.PlanDetailDateButton>
         ))}
       </S.PlanDetailDateBox>
       {/* 스태퍼 박스 영역 */}
-      <S.PlanDetailContentBox>
-        {/* 박스 헤더 영역 */}
-        <S.PlanDetailContentHeader>
-          <S.DetailHeaderContent>
-            <div>{`${currentStep + 1}일차`}</div>
-            <hr />
-          </S.DetailHeaderContent>
-          <S.DetailHeaderSubContent>
-            <S.DetailHeaderSubDate>
-              {' '}
-              <div>{displayDate}</div>
-            </S.DetailHeaderSubDate>
-          </S.DetailHeaderSubContent>
-        </S.PlanDetailContentHeader>
-        {unitPlans.map((input, index) => (
+
+      {unitPlans.map((input, index) => (
+        <S.PlanDetailCreateBox>
           <IS.PlanListInputContainer key={index}>
             {/* 출발지 영역 */}
             <IS.ListInputbox>
@@ -356,54 +359,61 @@ const PlanCreate2: React.FC = () => {
               />
             </IS.ListInputbox>
             {/* 위치 영역 */}
-            <IS.ListInputbox>
-              <div>
-                위치
-                <img
-                  src="/assets/icons/pin.png"
-                  alt="pin"
-                  onClick={() => handleOpenMapClick(index)}
+            <IS.ListInputboxWithFlex>
+              <div>위치</div>
+              <IS.ListContent>
+                <ModernInput
+                  placeholder="서울특별시 중구 을지로 201"
+                  value={`${input.place_name}, ${input.address}`}
+                  readonly={true}
+                  type={'text'}
+                  border="transparent"
+                  width={750}
                 />
-                <p>아이콘을 클릭하면 지도가 보입니다.</p>
-              </div>
-              <input
-                placeholder="서울특별시 중구 을지로 201"
-                value={`${input.place_name}, ${input.address}`}
-                // value={location}
-                readOnly
-                // onChange={(e) =>
-                //   handleInputChange(index, 'budget', e.target.value)
-                // }
-              />
-            </IS.ListInputbox>
+                <IS.ImgBox>
+                  {/* <IoIosArrowDropright
+                    color="lightGray"
+                    size="2rem"
+                    onClick={() => handleOpenMapClick(index)}
+                  /> */}
+                  <TfiArrowCircleRight
+                    size="35px"
+                    color="lightGray"
+                    onClick={() => handleOpenMapClick(index)}
+                  />
+                </IS.ImgBox>
+              </IS.ListContent>
+            </IS.ListInputboxWithFlex>
           </IS.PlanListInputContainer>
-        ))}
-      </S.PlanDetailContentBox>
-      <PS.ButtonBoxToCenter>
+        </S.PlanDetailCreateBox>
+      ))}
+      <PS.ButtonBox>
         <Button
           text="+"
-          width="auto"
-          height="50px"
+          width="100%"
+          height="60px"
           color="white"
-          borderColor="black"
-          borderRadius="15px"
-          fontWeight="bold"
+          borderColor="lightGray"
+          borderRadius="25px"
+          textColor="lightGray"
           onClick={handlePlanAdd}
         />
-      </PS.ButtonBoxToCenter>
+      </PS.ButtonBox>
       {/* 등록하기 버튼 영역 */}
-      <S.ButtonBox>
+      <S.ButtonBoxToRight>
         <Button
           text="등록하기"
           width="150px"
           height="50px"
-          color="black"
           borderRadius="15px"
           fontWeight="bold"
           textColor="white"
+          color="#5AC8EC"
+          borderColor="#5AC8EC"
+          marginRight="15px"
           onClick={handlePlanSubmit} // 등록하기 버튼 클릭 핸들러 추가
         />
-      </S.ButtonBox>
+      </S.ButtonBoxToRight>
 
       {isModalOpen && (
         <KaKaoMap

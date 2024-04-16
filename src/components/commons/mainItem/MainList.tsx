@@ -42,11 +42,12 @@ const MainListContainer = styled.div`
   width: 100%;
   max-width: 950px;
   margin: 0 auto;
+  margin-bottom: 100px;
 `;
 
 const ItemContainer = styled.div`
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 3fr 2fr;
   width: 450px;
   height: 200px;
   background: #fff;
@@ -58,7 +59,7 @@ const ItemContainer = styled.div`
 `;
 
 const TextSection = styled.div`
-  padding: 0 20px;
+  padding: 20px 20px;
   /* width: 60%; */
 `;
 
@@ -77,9 +78,10 @@ const Content = styled.p`
 
 const Image = styled.img`
   width: 180px;
+  height: 190px;
+  justify-self: end;
   margin-right: 10px;
-  height: 170px;
   object-fit: cover;
-  border: 1px solid #000;
+  /* border: 1px solid #000; */
   border-radius: 10px;
 `;

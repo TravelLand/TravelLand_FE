@@ -4,20 +4,32 @@ import { FaCamera, FaTimes } from 'react-icons/fa';
 
 const TravelReviewCardSection = styled.div`
   padding: 0 60px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 25px;
+  display: flex;
+  flex-wrap: wrap;
+  margin: -15px;
+
+  > * {
+    flex: 1 0 calc(33.33% - 30px);
+    margin: 15px;
+    box-sizing: border-box; // 추가된 스타일
+    max-width: calc(33.33% - 30px); // 추가된 스타일
+  }
 
   @media (max-width: 768px) {
-    grid-template-columns: repeat(1, 1fr);
     padding: 0 20px;
+
+    > * {
+      flex: 1 0 calc(100% - 30px);
+    }
   }
 `;
 
 const TravelReviewstyle = styled.div`
-  padding: 50px 250px;
+  padding: 50px; // 수정된 패딩
   max-width: 1200px;
   margin: 0 auto;
+  box-sizing: border-box; // 추가된 스타일
+  overflow-x: hidden; // 가로 스크롤 숨김
 
   @media (max-width: 768px) {
     padding: 20px;
@@ -334,4 +346,10 @@ export const ReviewBox = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+`;
+
+export const LoadingText = styled.span`
+  font-size: 16px;
+  font-weight: bold;
+  color: #000;
 `;

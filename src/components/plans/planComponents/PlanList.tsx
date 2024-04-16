@@ -13,7 +13,7 @@ const PlanList = () => {
   };
 
   const [page, setPage] = useState(1); // 페이지 번호
-  const [size] = useState(20); // 한 페이지 당 받아올 겟수
+  const [size] = useState(8); // 한 페이지 당 받아올 겟수
   const [pageGroup, setPageGroup] = useState(0); // 현재 페이지 그룹
   const [totalPages, setTotalPages] = useState(0); // 전체 페이지 수
   const pageGroupSize = 10; // 페이지 그룹 당 표시할 페이지 수
@@ -61,6 +61,13 @@ const PlanList = () => {
 
   return (
     <>
+      <S.ButtonBox>
+        {' '}
+        <h1>어디로 갈랜?</h1>
+        <S.PlanNextButton onClick={handleMakePlanClick}>
+          플랜 만들기
+        </S.PlanNextButton>
+      </S.ButtonBox>
       {/* 데이터 리스트 컴포넌트 */}
       <List planListData={filteredData} />
       {/* pagination */}
@@ -87,11 +94,6 @@ const PlanList = () => {
           <button onClick={handleNextGroup}>다음</button>
         )}
       </CS.PagenationStyle>
-      <S.ButtonBox>
-        <S.PlanNextButton onClick={handleMakePlanClick}>
-          플랜 만들기
-        </S.PlanNextButton>
-      </S.ButtonBox>
     </>
   );
 };

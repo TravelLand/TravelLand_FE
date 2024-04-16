@@ -5,10 +5,14 @@ import { ModernInput } from '@/components/commons/inputs/Input';
 import * as S from '@/components/plans/Plan.style';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import '@/components/DatePicker.styles.css';
-import 'react-datepicker/dist/react-datepicker.min.css';
+// import 'react-datepicker/dist/react-datepicker.min.css';
 import { Locale } from 'node_modules/date-fns/locale/types';
 import ko from 'date-fns/locale/ko';
 registerLocale('ko', ko as unknown as Locale);
+import { TfiArrowCircleRight } from 'react-icons/tfi';
+import { SlLocationPin } from 'react-icons/sl';
+import { BiCoinStack } from 'react-icons/bi';
+import { CiCalendar } from 'react-icons/ci';
 
 const PlanCreate = () => {
   const navigate = useNavigate();
@@ -50,8 +54,35 @@ const PlanCreate = () => {
   const displayDateRange = () => {
     const start = dateRange[0] ? dateRange[0].toLocaleDateString() : '';
     const end = dateRange[1] ? dateRange[1].toLocaleDateString() : '';
+    if (!start && !end) {
+      return (
+        <ModernInput
+          type="text"
+          placeholder="지역을 입력해주세요"
+          width={400}
+          height={30}
+          border="transparent"
+          fontSize={16}
+          readonly={true}
+          // onChange={handleAreaChange}
+        />
+      );
+    }
 
-    return `${start} - ${end}`;
+    return (
+      <div
+        style={{
+          padding: '5px',
+          width: '400px',
+          border: ' 1px solid transparent',
+          height: '30px',
+          fontSize: '16px',
+          fontWeight: 'bold',
+        }}
+      >
+        {start} - {end}
+      </div>
+    );
   };
 
   // 지역
@@ -87,106 +118,176 @@ const PlanCreate = () => {
           area,
         },
       });
+    } else {
+      alert('전체 입력이 필요합니다!');
     }
   };
 
+  const dateFormat = 'yyyy-MM';
+
   return (
     <>
-      <S.PlanFirstSection>
-        <S.PlanBox>
-          <img src="/assets/icons/pinPoint.png" />
-          <S.PlanContent>
-            <S.PlanContentTitle>제목</S.PlanContentTitle>
-            <ModernInput
-              type="text"
-              placeholder="제목을 입력하세요"
-              width={100}
-              height={30}
-              border="transparent"
-              onChange={handleTitleChange}
-            />
-          </S.PlanContent>
-        </S.PlanBox>
-        <div>
-          <ToggleButton isChecked={!isPublic} onToggle={toggleIsPublic} />
-        </div>
-      </S.PlanFirstSection>
-      <S.PlanSecondSection>
-        {/* 플랜 계획 첫페이지 */}
-        <div>
-          {/* 작성자 칸 */}
-          <S.PlanWriterBox>
-            <img src="/assets/icons/pinPoint.png" />
+      {/* 전체 컨테이너 */}
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        {/* 작성 컨테이너 */}
+        <div
+          style={{
+            width: '100%',
+          }}
+        >
+          <div>
+            <div> 제목</div>
+            <S.PlanBoxWithSpaceBetween>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <img
+                  src="/assets/icons/Rectangle.png"
+                  style={{ height: '50px' }}
+                />
+                <ModernInput
+                  type="text"
+                  placeholder="제목을 입력해주세요"
+                  width={400}
+                  height={50}
+                  border="transparent"
+                  onChange={handleTitleChange}
+                  fontSize={18}
+                  fontWeight={'bold'}
+                />
+              </div>
+
+              <div>
+                <ToggleButton isChecked={!isPublic} onToggle={toggleIsPublic} />
+              </div>
+            </S.PlanBoxWithSpaceBetween>
+          </div>
+          <div>
+            {/* 플랜 계획 첫페이지 */}
             <div>
-              <p>작성자 유저 정보 표시란</p>
+              {/* 지역 */}
+              <S.PlanBox>
+                <div
+                  style={{
+                    backgroundColor: '#C5F1FF',
+                    width: '35px',
+                    height: '35px',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <SlLocationPin size="25px" color="white" />
+                </div>
+                <S.PlanContent>
+                  <div>지역</div>
+                  <ModernInput
+                    type="text"
+                    placeholder="지역을 입력해주세요"
+                    width={400}
+                    height={30}
+                    border="transparent"
+                    fontSize={16}
+                    onChange={handleAreaChange}
+                  />
+                </S.PlanContent>
+              </S.PlanBox>
+              <hr />
+              {/*예산 */}
+              <S.PlanBox>
+                <div
+                  style={{
+                    backgroundColor: '#C5F1FF',
+                    width: '35px',
+                    height: '35px',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <BiCoinStack size="25px" color="white" />
+                </div>
+                <S.PlanContent>
+                  <div>예산</div>
+                  <ModernInput
+                    type="text"
+                    placeholder="예산을 입력해주세요"
+                    width={400}
+                    height={30}
+                    border="transparent"
+                    fontSize={16}
+                    onChange={handleBudgetChange}
+                  />
+                </S.PlanContent>
+              </S.PlanBox>
+              <hr />
+              {/*기간 선택*/}
+              <S.PlanBox>
+                <div
+                  style={{
+                    backgroundColor: '#C5F1FF',
+                    width: '35px',
+                    height: '35px',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <CiCalendar size="25px" color="white" />
+                </div>
+                <S.PlanBoxWithCalendar>
+                  <div style={{ paddingLeft: '15px' }}>
+                    <div>여행기간</div>
+                    <div> {displayDateRange()}</div>
+                  </div>
+                  <div style={{ paddingLeft: '200px' }}>
+                    <TfiArrowCircleRight size="35px" color="lightGray" />
+                  </div>
+                </S.PlanBoxWithCalendar>
+              </S.PlanBox>
+              <hr />
             </div>
-          </S.PlanWriterBox>
-          {/* 지역 */}
-          <S.PlanBox>
-            <img src="/assets/icons/pinPoint.png" />
-            <S.PlanContent>
-              <S.PlanContentTitle>지역</S.PlanContentTitle>
-              <ModernInput
-                type="text"
-                placeholder="부산"
-                width={100}
-                height={30}
-                border="transparent"
-                onChange={handleAreaChange}
-              />
-            </S.PlanContent>
-          </S.PlanBox>
-          {/*예산 */}
-          <S.PlanBox>
-            <img src="/assets/icons/dolor.png" />
-            <S.PlanContent>
-              <S.PlanContentTitle>예산</S.PlanContentTitle>
-              <ModernInput
-                type="text"
-                placeholder="100000"
-                width={100}
-                height={30}
-                border="transparent"
-                onChange={handleBudgetChange}
-              />
-            </S.PlanContent>
-          </S.PlanBox>
-          {/*기간 선택*/}
-          <S.PlanBox>
-            <img src="/assets/icons/calendar.png" />
-            <S.PlanHorizontalContent>
-              <S.PlanContentTitle>기간</S.PlanContentTitle>
-              <div>{displayDateRange()}</div>
-            </S.PlanHorizontalContent>
-          </S.PlanBox>
+          </div>
         </div>
-      </S.PlanSecondSection>
+        {/* 달력 컨테이너 */}
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <DatePicker
+            locale="ko"
+            selectsRange={true}
+            startDate={dateRange[0]}
+            endDate={dateRange[1]}
+            inline
+            dateFormat={dateFormat}
+            onChange={handleDateRangeChange}
+
+            // customInput={
+            //   <CalendarButton
+            //     onClick={function (): void {
+            //       throw new Error('Function not implemented.');
+            //     }}
+            //   />
+            // }
+            // 이제 여기서 ref와 onClick 모두 처리 가능
+            // excludeDates={[addDays(new Date(), 1), addDays(new Date(), 5)]}
+
+            // open={isCalendarOpen}
+            // shouldCloseOnSelect={true}
+            // onCalendarOpen={() => setIsCalendarOpen(true)}
+            // onCalendarClose={() => setIsCalendarOpen(false)} // 달력이 닫힐 때 상태를 업데이트하는 콜백 추가
+          />
+        </div>
+      </div>
       <S.PlanBottomSection>
         {/* 다음 버튼 */}
         <S.PlanNextButton onClick={handleNextClick}>다음</S.PlanNextButton>
       </S.PlanBottomSection>
-      <DatePicker
-        locale="ko"
-        selectsRange={true}
-        startDate={dateRange[0]}
-        endDate={dateRange[1]}
-        onChange={handleDateRangeChange}
-        inline
-        // customInput={
-        //   <CalendarButton
-        //     onClick={function (): void {
-        //       throw new Error('Function not implemented.');
-        //     }}
-        //   />
-        // }
-        // 이제 여기서 ref와 onClick 모두 처리 가능
-        // excludeDates={[addDays(new Date(), 1), addDays(new Date(), 5)]}
-
-        // open={isCalendarOpen}
-        // shouldCloseOnSelect={true}
-        // onCalendarOpen={() => setIsCalendarOpen(true)}
-        // onCalendarClose={() => setIsCalendarOpen(false)} // 달력이 닫힐 때 상태를 업데이트하는 콜백 추가
-      />
     </>
   );
 };

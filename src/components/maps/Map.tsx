@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import Modal from '@/components/commons/modals/Modal';
-import Button from '../commons/buttons/Button';
+import { DetailMapModal } from '@/components/commons/modals/Modal';
 import * as S from './Map.style';
+import { SlLocationPin } from 'react-icons/sl';
 
 interface MapModalProps {
   isOpen: boolean;
@@ -52,27 +52,40 @@ const Map: React.FC<MapModalProps> = ({ isOpen, onClose, address }) => {
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <DetailMapModal isOpen={isOpen} onClose={onClose}>
         <S.MapTitle>
           <S.MapTitleLeft>
-            <img src="/assets/icons/pinPoint.png" />
-            <div>위치 보기</div>
+            <div
+              style={{
+                backgroundColor: '#C5F1FF',
+                width: '35px',
+                height: '35px',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <SlLocationPin size="25px" color="black" />
+            </div>
+            <div>위치보기</div>
           </S.MapTitleLeft>
           <div>{address}</div>
+          <S.MapCloseButton onClick={onClose}>X</S.MapCloseButton>
         </S.MapTitle>
         {/* 지도 영역  */}
         {/* 추후 지도에 마크업으로 표기한 데이터를 갖고 오기  */}
         <div
           id="map"
           style={{
-            width: '100%',
-            height: '250px',
+            width: '480px',
+            height: '480px',
             borderRadius: '5px',
             marginBottom: '5px',
+            borderStyle: 'none',
           }}
         />
-        <Button text="닫기" onClick={onClose} />
-      </Modal>
+      </DetailMapModal>
     </>
   );
 };

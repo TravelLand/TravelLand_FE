@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import Modal from '../commons/modals/Modal';
-import Button from '../commons/buttons/Button';
+import { MapModal } from '../commons/modals/Modal';
+// import Button from '../commons/buttons/Button';
 import { KaKaoMapResult, MapSearchType } from './KaKaoMapResult';
-
+import * as S from './Map.style';
+import { FiSearch } from 'react-icons/fi';
 interface PlaceType {
   place_name: string;
   road_address_name: string;
@@ -32,6 +33,12 @@ const KaKaoMap: React.FC<KaKaoMapSearchModalProps & MapSearchType> = ({
   const [Keyword, setKeyword] = useState('');
 
   // const [_, setIsModalOpen] = useState(false);
+  // 검색어를 입력하지 않고 검색 버튼을 눌렀을 경우
+  const valueChecker = () => {
+    if (Value === '') {
+      alert('검색어를 입력해주세요.');
+    }
+  };
 
   // 입력 폼 변화 감지하여 입력 값을 state에 담아주는 함수
   const keywordChange = (e: {
@@ -48,53 +55,28 @@ const KaKaoMap: React.FC<KaKaoMapSearchModalProps & MapSearchType> = ({
     setKeyword(Value);
   };
 
-  // 검색어를 입력하지 않고 검색 버튼을 눌렀을 경우
-  const valueChecker = () => {
-    if (Value === '') {
-      alert('검색어를 입력해주세요.');
-    }
-  };
-
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <div style={{ alignItems: 'center' }}>
-          <form onSubmit={submitKeyword} style={{ marginRight: '10px' }}>
-            <label
-              htmlFor="place"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                // padding: ' 15px;',
-              }}
-            >
-              <input
+      <MapModal isOpen={isOpen} onClose={onClose}>
+        <form onSubmit={submitKeyword}>
+          <label htmlFor="place">
+            <S.MapSearchBar>
+              <S.MapSearchInput
                 type="text"
-                name="place"
                 onChange={keywordChange}
-                placeholder="검색어를 입력해주세요. (ex: 강남 맛집)"
+                placeholder="장소를 검색해주세요."
                 required
-                style={{ marginRight: '5px', width: '250px', height: '25px' }}
               />
-              <input
-                type="submit"
-                value="검색"
-                onClick={valueChecker}
-                style={{
-                  height: '30px',
-                  backgroundColor: 'transparent',
-                  borderRadius: '5px',
-                  width: '100px',
-                  border: '1px solid black',
-                }}
-              />
-            </label>
-          </form>
-        </div>
-        {/* 제출한 검색어 넘기기 */}
+              <S.MapSearchButton onClick={valueChecker}>
+                <FiSearch size="1.5em" />
+              </S.MapSearchButton>
+              <S.MapCloseButton onClick={onClose}>X</S.MapCloseButton>
+            </S.MapSearchBar>
+          </label>
+        </form>
         <KaKaoMapResult searchKeyword={Keyword} onSelect={onSelect} />
-        <Button text="닫기" onClick={onClose} />
-      </Modal>
+        {/* 제출한 검색어 넘기기 */}
+      </MapModal>
     </>
   );
 };

@@ -40,7 +40,7 @@ const Header: React.FC = () => {
           ) : (
             <>
               <UserAction onClick={handleOpenLogin}>로그인</UserAction>
-              <UserAction>회원가입</UserAction>
+              {/* <UserAction>회원가입</UserAction> */}
             </>
           )}
         </Users>

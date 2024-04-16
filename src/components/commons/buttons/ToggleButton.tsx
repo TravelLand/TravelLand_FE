@@ -21,7 +21,7 @@ export default ToggleButton;
 const ToggleWrapper = styled.div`
   position: relative;
   display: inline-block;
-  margin: 10px 0px;
+  margin: 5px 0px;
 `;
 
 const ToggleInput = styled.input`
@@ -39,10 +39,10 @@ const Slider = styled.span<{ $isChecked: boolean }>`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: ${(props) => (props.$isChecked ? 'white' : 'white')};
+  background-color: ${(props) => (props.$isChecked ? '#5AC8EC' : '#5AC8EC')};
   transition: 0.4s;
-  border-radius: 40px;
-  border: 1px solid black;
+  border-radius: 50px;
+  /* border: 1px solid black; */
 
   span {
     text-align: center;
@@ -50,11 +50,11 @@ const Slider = styled.span<{ $isChecked: boolean }>`
 
     &:nth-child(1) {
       transition: all 0.4s;
-      color: ${(props) => (props.$isChecked ? '#000' : '#fff')};
+      color: ${(props) => (props.$isChecked ? 'white' : 'white')};
     }
     &:nth-child(2) {
       transition: all 0.4s;
-      color: ${(props) => (props.$isChecked ? '#fff' : '#000')};
+      color: ${(props) => (props.$isChecked ? 'white' : 'white')};
     }
     padding: 12px 7px;
     font-size: 13px;
@@ -69,7 +69,7 @@ const Slider = styled.span<{ $isChecked: boolean }>`
     height: 35px;
     width: 45%;
     left: ${(props) => (props.$isChecked ? '57px' : '3px')};
-    background-color: black;
+    background-color: white;
     transition: all 0.4s;
     border-radius: 20px;
     transform: translateY(-50%);
