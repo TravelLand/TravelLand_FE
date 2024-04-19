@@ -19,6 +19,10 @@ const LoginStyle = styled.div`
   p {
     font-size: 12px;
   }
+
+  div {
+    display: flex;
+  }
 `;
 
 export { MyPageStyle, LoginStyle };

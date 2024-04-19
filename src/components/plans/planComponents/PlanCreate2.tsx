@@ -55,7 +55,7 @@ const PlanCreate2: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
 
   // Initializing displayDate
-  const [, setDisplayDate] = useState<string>(formatDate(tripStartDate));
+  // const [, setDisplayDate] = useState<string>(formatDate(tripStartDate));
 
   const [unitPlans, setUnitPlans] = useState<UnitPlan[]>([
     {
@@ -194,48 +194,56 @@ const PlanCreate2: React.FC = () => {
 
   // handleDayChange 함수 내에서 currentStep 업데이트 로직 확인 및 최적화
   const handleDayChange = (stepIndex: number) => {
-    const currentUnitPlans = [...unitPlans];
-    console.log('Changing day to:', stepIndex);
+    // 현재 일차의 데이터를 저장합니다.
+    const newDayPlans = [...dayPlans];
 
-    const newDisplayDate = calculateDateForStep(tripStartDate, stepIndex);
-    console.log('New display date:', newDisplayDate);
+    // 현재 일차 데이터 업데이트
+    if (newDayPlans[currentStep]) {
+      newDayPlans[currentStep] = {
+        ...newDayPlans[currentStep],
+        unitPlans: [...unitPlans],
+      };
+    } else {
+      // 현재 일차 데이터가 없다면 새로운 DayPlan 생성
+      newDayPlans[currentStep] = {
+        date: calculateDateForStep(tripStartDate, currentStep),
+        unitPlans: [...unitPlans],
+      };
+    }
 
-    setDisplayDate(newDisplayDate);
-    setCurrentStep(stepIndex);
-
-    // 새로운 dayPlans 배열을 준비합니다. 기존 dayPlans를 복사합니다.
-    let newDayPlans = [...dayPlans];
-    if (dayPlans.length <= stepIndex) {
-      // 선택된 일차에 대한 DayPlan이 없으면 새로운 DayPlan을 추가합니다.
-      while (newDayPlans.length <= stepIndex) {
+    // 새로운 일차를 추가하기 전에 마지막 일차가 있는지 확인하고, 없으면 추가합니다.
+    if (stepIndex >= newDayPlans.length) {
+      for (let i = newDayPlans.length; i <= stepIndex; i++) {
         newDayPlans.push({
-          date: calculateDateForStep(tripStartDate, newDayPlans.length),
+          date: calculateDateForStep(tripStartDate, i),
           unitPlans: [],
         });
       }
     }
 
-    // 현재 단계의 DayPlan에 현재 unitPlans를 저장합니다.
-    newDayPlans[stepIndex].unitPlans = currentUnitPlans;
-
-    // DayPlans 업데이트
+    // DayPlans 배열을 업데이트
     setDayPlans(newDayPlans);
-    // 다음 단계로 이동
+
+    // 새 일차로 변경
     setCurrentStep(stepIndex);
 
-    // unitPlans를 초기화합니다.
-    setUnitPlans([
-      {
-        title: '',
-        time: '',
-        address: '',
-        content: '',
-        place_name: '',
-        budget: 0,
-        x: 0,
-        y: 0,
-      },
-    ]);
+    // 선택된 일차의 UnitPlans 로드하거나 초기화
+    setUnitPlans(
+      newDayPlans[stepIndex].unitPlans.length > 0
+        ? newDayPlans[stepIndex].unitPlans
+        : [
+            {
+              title: '',
+              time: '',
+              place_name: '',
+              address: '',
+              content: '',
+              budget: 0,
+              x: 0,
+              y: 0,
+            },
+          ],
+    );
   };
 
   const createPlanList = useCreatePlanMutaton();
@@ -276,7 +284,7 @@ const PlanCreate2: React.FC = () => {
         tripEndDate: formatDate(tripEndDate), // 포맷된 날짜로 확정
         dayPlans: updatedDayPlans,
       };
-
+      // console.log(planToSubmit);
       // 여기서 API 호출 등의 추가 작업을 수행할 수 있습니다.
       createPlanList.mutate(planToSubmit);
     } else {

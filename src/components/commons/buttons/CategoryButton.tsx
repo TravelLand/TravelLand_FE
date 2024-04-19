@@ -7,6 +7,7 @@ interface CategoryButtonProps {
   title?: string;
   onClick?: () => void;
   icon?: React.ReactNode;
+  hoverColor?: string; // hoverColor props 추가
 }
 
 const CategoryButton: React.FC<CategoryButtonProps> = ({
@@ -14,13 +15,14 @@ const CategoryButton: React.FC<CategoryButtonProps> = ({
   title,
   onClick,
   icon,
+  hoverColor,
 }) => {
   return (
-    <S.CatagoryBtn onClick={onClick}>
+    <S.CategoryButtonStyle onClick={onClick} hoverColor={hoverColor}>
       {icon}
       {title}
       {width}
-    </S.CatagoryBtn>
+    </S.CategoryButtonStyle>
   );
 };
 

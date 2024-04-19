@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import SearchIcon from '@/icons/SearchIcon.svg';
+import SearchIcon from '@/icons/search2.svg';
 // import { useNavigate } from 'react-router-dom';
 
 interface SearchInputProps {
@@ -35,15 +35,14 @@ const SearchContainer = styled.div`
   align-items: center;
   line-height: 50px;
   position: relative;
-  width: 500px;
+  width: 550px; // 550px로 변경가능하면 변경!
   height: 50px;
   padding: 5px;
-  padding-right: 40px;
   border-radius: 50px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   background: white;
   border: 1px solid #ccc;
-  margin: 30px auto;
+  margin: 40px auto;
   margin-bottom: 40px;
 `;
 
@@ -58,6 +57,6 @@ const Input = styled.input`
 const Icon = styled.img`
   position: absolute;
   right: 10px;
-  width: 65px;
-  height: 65px;
+  width: 50px;
+  height: 50px;
 `;

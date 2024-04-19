@@ -1,53 +1,33 @@
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
+import { useAuthStore } from '@/store/useAuthStore';
 
 const KakaoRedirect: React.FC = () => {
-  const cookie = new Cookies();
-  // const navigate = useNavigate();
-  const params = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { login } = useAuthStore(); // 로그인 함수를 여기에서 가져옵니다.
+
   useEffect(() => {
-    // const authToken = res.headers['authorization']; // Headers are generally case-insensitive but depend on server configuration
-    if (params) {
-      cookie.set('Authorization', params.Authorization, { path: '/' });
+    const queryParams = new URLSearchParams(location.search);
+    const authorizationToken = queryParams.get('Authorization');
+    const cookie = new Cookies();
+
+    if (authorizationToken) {
+      const options = {
+        path: '/',
+        // 추가 옵션: secure, httpOnly, sameSite, expires 등
+      };
+
+      cookie.set('Authorization', authorizationToken, options);
+      login(); // 로그인 상태를 true로 설정
+      navigate('/'); // 메인 페이지로 이동
     } else {
-      console.log('Authorization token not found in the response headers.');
+      console.error('Authorization token not found in the query string.');
     }
-  });
-  //
-  // const navigate = useNavigate();
-  // const code = new URL(window.location.href).searchParams.get('code');
-  // const response = async (code: string | null) => {
-  //   if (!code) {
-  //     console.log('Authorization code not found.');
-  //     navigate('/'); // Navigate to home if no code is found
-  //     return;
-  //   }
-  //   try {
-  //     const res: AxiosResponse = await instance.get('/users/login/kakao', {
-  //       params: { code },
-  //     });
-  //     // console.log(res);
-  //     // Correct way to access custom headers - make sure the header names are correctly handled
-  //     const authToken = res.headers['authorization']; // Headers are generally case-insensitive but depend on server configuration
-  //     if (authToken) {
-  //       cookie.set('Authorization', authToken, { path: '/' });
-  //     } else {
-  //       console.log('Authorization token not found in the response headers.');
-  //     }
-  //     navigate('/');
-  //   } catch (error: any) {
-  //     console.error(
-  //       'An error occurred during the authentication process:',
-  //       error,
-  //     );
-  //     navigate('/');
-  //   }
-  // };
-  // useEffect(() => {
-  //   response(code);
-  // }, [code]);
-  return null; // Since this component does not render anything, return null
+  }, [location.search, navigate, login]); // login을 의존성 배열에 추가합니다.
+
+  return null; // 이 컴포넌트는 아무것도 렌더링하지 않으므로 null을 반환합니다.
 };
 
 export default KakaoRedirect;

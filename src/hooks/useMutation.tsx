@@ -1,4 +1,5 @@
 import { createPlanList, deletePlan } from '@/api/planAxios';
+import { createVote } from '@/api/voteAxios';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
@@ -28,6 +29,21 @@ export const useDeleteMutation = () => {
     },
     onError: () => {
       alert('삭제하기에 에러가 발생했습니다.');
+    },
+  });
+};
+
+// 투표 생성하기
+export const useCreateVoteMutation = () => {
+  const navigate = useNavigate();
+  return useMutation({
+    mutationFn: createVote,
+    onSuccess: () => {
+      alert('투표 생성이 완료되었습니다.');
+      navigate('/user/myPage');
+    },
+    onError: () => {
+      alert('투표 생성하기에 에러가 발생했습니다.');
     },
   });
 };

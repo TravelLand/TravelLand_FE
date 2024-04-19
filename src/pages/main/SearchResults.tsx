@@ -1,15 +1,15 @@
 // import React from 'react'
-
-import Header from '@/components/layouts/Header';
+import ReDesignHeader from '@/components/layouts/Header2';
 import ResultsContent from '@/components/search/ResultsContent';
 import SearchInput from '@/components/search/Search';
 
 const SearchResults = () => {
   return (
     <>
-      <Header />
+      <ReDesignHeader />
       <SearchInput placeholder="검색어를 입력해주세요." />
       <ResultsContent />
+      {/* <ResultsContent /> */}
     </>
   );
 };

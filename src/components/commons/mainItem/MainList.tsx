@@ -1,30 +1,45 @@
 import React from 'react';
 import styled from 'styled-components';
+import { CiBookmark } from 'react-icons/ci';
+import CategoryButton from '../buttons/CategoryButton';
 
 interface ListItemProps {
-  title?: string;
-  location?: string;
-  description?: string;
-  likes?: number;
-  imageUrl?: string;
+  rank: string;
+  title: string;
+  location: string;
+  description: string;
+  categories: string[];
+  imageUrl: string;
+  startDate: string;
+  endDate: string;
 }
 
 interface MainListProps {
   items: ListItemProps[];
 }
-// 메인 리스트
-const MainList: React.FC<MainListProps> = ({ items }) => {
+
+const MainList: React.FC<MainListProps> = ({ items = [] }) => {
   return (
     <MainListContainer>
       {items.map((item, index) => (
         <ItemContainer key={index}>
+          <ImageSection>
+            <Image src={item.imageUrl} alt="이미지" />
+            <BookmarkIcon />
+          </ImageSection>
           <TextSection>
-            <Title>{item.title}</Title>
-            <p>{item.location}</p>
+            <Rank>{index + 1}</Rank>
+            <Title>
+              {item.location} | {item.startDate} - {item.endDate}
+            </Title>
+            <MainTitle>{item.title}</MainTitle>
             <Content>{item.description}</Content>
-            <button>♥ {item.likes}개</button>
+            <CategoriesContainer>
+              {item.categories.map((category, categoryIndex) => (
+                <CategoryButton key={categoryIndex} title={category} />
+              ))}
+            </CategoriesContainer>
           </TextSection>
-          <Image src={item.imageUrl} alt="이미지" />
         </ItemContainer>
       ))}
     </MainListContainer>
@@ -35,53 +50,101 @@ export default MainList;
 
 const MainListContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr); // 2개의 컬럼
-  grid-template-rows: repeat(5, 1fr); // 5개의 행
-  column-gap: 10px;
-  row-gap: 20px;
-  width: 100%;
-  max-width: 950px;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto;
+  gap: 20px;
+  width: 1100px;
   margin: 0 auto;
   margin-bottom: 100px;
 `;
 
+const BookmarkIcon = styled(CiBookmark)`
+  position: absolute;
+  bottom: 20px;
+  right: 12px;
+  font-size: 18px;
+  color: #666;
+  border: 2px solid #c5f1ff;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  padding: 5px;
+  z-index: 9;
+  background-color: #c5f1ff;
+`;
+
+const Rank = styled.div`
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #fff;
+  padding: 5px 10px;
+  margin-top: 20px;
+  color: #5ac8ec;
+  font-family: 'LotteriaChab', sans-serif; /* 다른 폰트 적용 */
+  font-size: 30px;
+  /* font-size: 3rem; */
+  font-weight: bold;
+`;
+
 const ItemContainer = styled.div`
-  display: grid;
-  grid-template-columns: 3fr 2fr;
-  width: 450px;
-  height: 200px;
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 250px;
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   overflow: hidden;
-  margin-bottom: 10px;
-  margin: 10px auto;
+`;
+
+const ImageSection = styled.div`
+  position: relative;
+  flex: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const TextSection = styled.div`
-  padding: 20px 20px;
-  /* width: 60%; */
+  flex: 3;
+  position: relative;
+  padding: 20px;
 `;
 
-const Title = styled.h2`
-  margin: 0;
+const Title = styled.div`
+  margin-top: 70px;
   color: #333;
-  font-size: 20px;
+  font-size: 14px;
   font-weight: 600;
 `;
 
-const Content = styled.p`
+const MainTitle = styled.div`
+  margin-top: 10px;
+  color: #000;
+  font-size: 22px;
+  font-weight: 600;
+`;
+
+const Content = styled.div`
   margin: 10px 0 10px;
-  color: #666;
-  font-size: 16px;
+  color: #000;
+  font-size: 17px;
 `;
 
 const Image = styled.img`
-  width: 180px;
-  height: 190px;
-  justify-self: end;
-  margin-right: 10px;
-  object-fit: cover;
-  /* border: 1px solid #000; */
+  width: 260px;
+  height: 240px;
   border-radius: 10px;
+`;
+
+const CategoriesContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-top: 3px;
+  gap: 4px;
+  height: 100px;
+  overflow: hidden;
 `;

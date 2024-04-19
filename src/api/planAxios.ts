@@ -55,7 +55,7 @@ export const getDayPlanId = async (
 // 여행 플랜 삭제
 export const deletePlan = async (planId: Number) => {
   try {
-    return await instanceWithToken.delete(`/v1/plans/${planId}`);
+    return await instanceWithToken.delete(`/v1/plans/allInOn/${planId}`);
   } catch (error) {
     console.error(error);
     throw error;

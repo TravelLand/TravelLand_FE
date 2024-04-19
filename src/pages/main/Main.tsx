@@ -1,22 +1,58 @@
+import React, { useState } from 'react';
 import {
   ButtonContainer,
   ButtonsWrapper,
 } from '@/components/commons/buttons/Button.style';
-import Header from '@/components/layouts/Header';
 import Search from '@/components/search/Search';
-import Button, { TabButton } from '@/components/commons/buttons/Button';
-import MainCard from '@/components/commons/mainItem/MainCard'; // ListItemProps,
+import Button, {
+  SmallButton,
+  // TabButton,
+} from '@/components/commons/buttons/Button';
+import MainCard from '@/components/commons/mainItem/MainCard';
 import Maintitle from '@/components/commons/mainItem/MainTitle';
 import ListTitle from '@/components/commons/mainItem/ListTitle';
 import MainList from '@/components/commons/mainItem/MainList';
+import ReDesignHeader from '@/components/layouts/Header2';
+import SearchModal from './SearchPage';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import {
+  useGetMainHashtagListQuery,
+  useGetMainRankListQuery,
+} from '@/hooks/useQuery';
+// import SearchModal from '@/components/SearchModal';
 
 interface MainProps {
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const Main: React.FC<MainProps> = () => {
   const navigate = useNavigate();
+
+  const [isSearchModalOpen, setSearchModalOpen] = useState<boolean>(false);
+
+  // 모달을 토글하는 함수
+  const toggleSearchModal = () => setSearchModalOpen(!isSearchModalOpen);
+
+  // TopTen
+  const { data: TopTenData, isLoading, isError } = useGetMainRankListQuery();
+
+  console.log(TopTenData);
+
+  // 해시태그
+  const { data: hashTagData } = useGetMainHashtagListQuery();
+
+  console.log(hashTagData);
+
+  // 모달을 여는 함수
+  // const openSearchModal = () => {
+  //   setSearchModalOpen(true);
+  // };
+
+  // // 모달을 닫는 함수
+  // const closeSearchModal = () => {
+  //   setSearchModalOpen(false);
+  // };
 
   const handleMakePlanClick = () => {
     navigate('/planList');
@@ -29,22 +65,68 @@ const Main: React.FC<MainProps> = () => {
   // 메인 헤더 카드 임시 데이터
   const MainCardsData = [
     {
-      title: '경상도 경주',
-      category: '#한옥',
-      price: '150,000원',
+      title: '향기로운 봄날의 한옥 체험',
+      categories: ['#한옥', '#데이트', '#가족여행', '#역사', '#역사'],
       imageUrl: '/assets/kyeongju_720.jpg',
+      location: '경상도',
+      startDate: '2024-05-01',
+      endDate: '2024-05-03',
     },
     {
-      title: '경기도 가평',
-      category: '#여름',
-      price: '50,000원',
-      imageUrl: '/assets/gapyeong_720.jpg',
+      title: '향기로운 봄날의 한옥 체험',
+      categories: ['#한옥', '#데이트'],
+      imageUrl: '/assets/kyeongju_720.jpg',
+      location: '경상도',
+      startDate: '2024-05-01',
+      endDate: '2024-05-03',
     },
     {
-      title: '전라도 여수',
-      category: '#밤바다',
-      price: '200,000원',
-      imageUrl: '/assets/yeosu_720.jpg',
+      title: '향기로운 봄날의 한옥 체험',
+      categories: ['#한옥'],
+      imageUrl: '/assets/kyeongju_720.jpg',
+      location: '경상도',
+      startDate: '2024-05-01',
+      endDate: '2024-05-03',
+    },
+    {
+      title: '향기로운 봄날의 한옥 체험',
+      categories: ['#한옥'],
+      imageUrl: '/assets/kyeongju_720.jpg',
+      location: '경상도',
+      startDate: '2024-05-01',
+      endDate: '2024-05-03',
+    },
+    {
+      title: '향기로운 봄날의 한옥 체험',
+      categories: ['#한옥', '#데이트', '#가족여행', '#역사', '#역사'],
+      imageUrl: '/assets/jejudo_720.jpg',
+      location: '경상도',
+      startDate: '2024-05-01',
+      endDate: '2024-05-03',
+    },
+    {
+      title: '향기로운 봄날의 한옥 체험',
+      categories: ['#한옥'],
+      imageUrl: '/assets/jejudo_720.jpg',
+      location: '경상도',
+      startDate: '2024-05-01',
+      endDate: '2024-05-03',
+    },
+    {
+      title: '향기로운 봄날의 한옥 체험',
+      categories: ['#한옥'],
+      imageUrl: '/assets/jejudo_720.jpg',
+      location: '경상도',
+      startDate: '2024-05-01',
+      endDate: '2024-05-03',
+    },
+    {
+      title: '향기로운 봄날의 한옥 체험',
+      categories: ['#한옥'],
+      imageUrl: '/assets/jejudo_720.jpg',
+      location: '경상도',
+      startDate: '2024-05-01',
+      endDate: '2024-05-03',
     },
   ];
 
@@ -59,98 +141,154 @@ const Main: React.FC<MainProps> = () => {
 
   const items = [
     {
-      title: '서울',
-      location: '서울 > 남산타워( N서울타워)',
+      rank: '1',
+      title: '즐거웠던 여행',
+      location: '서울',
+      categories: ['#한옥', '#데이트'],
       description: '멋진 도시 전망을 볼 수 있는 곳',
-      likes: 110,
       imageUrl: '/assets/namsantower_720.jpg',
+      startDate: '2024-05-01',
+      endDate: '2024-05-03',
     },
     {
-      title: '여수',
-      location: '전라도 > 여수',
-      description: '낭만 있는 여수 밤바다',
-      likes: 100,
-      imageUrl: '/assets/yeosu_720.jpg',
+      rank: '1',
+      title: '즐거웠던 여행',
+      location: '서울',
+      categories: ['#한옥', '#데이트'],
+      description: '멋진 도시 전망을 볼 수 있는 곳',
+      imageUrl: '/assets/namsantower_720.jpg',
+      startDate: '2024-05-01',
+      endDate: '2024-05-03',
     },
     {
-      title: '경주',
-      location: '경상도 > 경주',
-      description: '한국의 멋, 한옥을 즐기다',
-      likes: 105,
-      imageUrl: '/assets/kyeongju_720.jpg',
+      rank: '1',
+      title: '즐거웠던 여행',
+      location: '서울',
+      categories: ['#한옥', '#데이트'],
+      description: '멋진 도시 전망을 볼 수 있는 곳',
+      imageUrl: '/assets/namsantower_720.jpg',
+      startDate: '2024-05-01',
+      endDate: '2024-05-03',
     },
     {
-      title: '가평',
-      location: '경기도 > 가평',
-      description: '봄 드라이브부터 여름 빠지까지',
-      likes: 98,
-      imageUrl: '/assets/gapyeong_720.jpg',
+      rank: '1',
+      title: '즐거웠던 여행',
+      location: '서울',
+      categories: ['#한옥', '#데이트'],
+      description: '멋진 도시 전망을 볼 수 있는 곳',
+      imageUrl: '/assets/namsantower_720.jpg',
+      startDate: '2024-05-01',
+      endDate: '2024-05-03',
     },
     {
-      title: '대전',
-      location: '충청도 > 대전',
-      description: '성심당 빵의 성지',
-      likes: 77,
-      imageUrl: '/assets/daejeon_720.jpg',
+      rank: '1',
+      title: '즐거웠던 여행',
+      location: '서울',
+      categories: ['#한옥', '#데이트'],
+      description: '멋진 도시 전망을 볼 수 있는 곳',
+      imageUrl: '/assets/namsantower_720.jpg',
+      startDate: '2024-05-01',
+      endDate: '2024-05-03',
     },
     {
-      title: '부산',
-      location: '경상도 > 부산',
-      description: '부산 갈매기~~',
-      likes: 65,
-      imageUrl: '/assets/busan_360.jpg',
+      rank: '1',
+      title: '즐거웠던 여행',
+      location: '서울',
+      categories: ['#한옥', '#데이트'],
+      description: '멋진 도시 전망을 볼 수 있는 곳',
+      imageUrl: '/assets/namsantower_720.jpg',
+      startDate: '2024-05-01',
+      endDate: '2024-05-03',
     },
     {
-      title: '제주도',
-      location: '제주도 > 제주도',
-      description: '말해모해 다 좋아',
-      likes: 56,
-      imageUrl: '/assets/jejudo_720.jpg',
+      rank: '1',
+      title: '즐거웠던 여행',
+      location: '서울',
+      categories: ['#한옥', '#데이트'],
+      description: '멋진 도시 전망을 볼 수 있는 곳',
+      imageUrl: '/assets/namsantower_720.jpg',
+      startDate: '2024-05-01',
+      endDate: '2024-05-03',
     },
     {
-      title: '강릉',
-      location: '강원도 > 강릉',
-      description: '동해바다에서 서핑하기',
-      likes: 55,
-      imageUrl: '/assets/gangreung_720.jpg',
+      rank: '1',
+      title: '즐거웠던 여행',
+      location: '서울',
+      categories: ['#한옥', '#데이트'],
+      description: '멋진 도시 전망을 볼 수 있는 곳',
+      imageUrl: '/assets/namsantower_720.jpg',
+      startDate: '2024-05-01',
+      endDate: '2024-05-03',
     },
     {
-      title: '목포',
-      location: '전라도 > 목포',
-      description: '10첩 반상의 고향',
-      likes: 47,
-      imageUrl: '/assets/mokppo_720.jpg',
+      rank: '1',
+      title: '즐거웠던 여행',
+      location: '서울',
+      categories: ['#한옥', '#데이트'],
+      description: '멋진 도시 전망을 볼 수 있는 곳',
+      imageUrl: '/assets/namsantower_720.jpg',
+      startDate: '2024-05-01',
+      endDate: '2024-05-03',
     },
     {
-      title: '서울',
-      location: '서울 > 명동',
-      description: '외국인들의 길거리 음식 맛집',
-      likes: 30,
-      imageUrl: '/assets/myeongdong_720.jpg',
+      rank: '1',
+      title: '즐거웠던 여행',
+      location: '서울',
+      categories: ['#한옥', '#데이트'],
+      description: '멋진 도시 전망을 볼 수 있는 곳',
+      imageUrl: '/assets/namsantower_720.jpg',
+      startDate: '2024-05-01',
+      endDate: '2024-05-03',
     },
   ];
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>error occured</div>;
+  }
+
   return (
     <>
-      <Header />
+      <ReDesignHeader />
       <Search
         placeholder="검색어를 입력해주세요."
-        onIconClick={() => navigate('/search')}
+        onIconClick={toggleSearchModal}
       />
       <ButtonContainer>
-        <TabButton text="떠돌이 랜드" onClick={handleReviewPageClick} />
-        <TabButton text="어디 갈랜?" onClick={handleMakePlanClick} />
+        {/* 버튼 이벤트 핸들러 로직 */}
+        {/* ... */}
       </ButtonContainer>
+      <ButtonsWrapper1>
+        <Button text="떠돌이랜드" onClick={handleReviewPageClick} />
+        <Button text="어디 갈랜?" onClick={handleMakePlanClick} />
+      </ButtonsWrapper1>
       <Maintitle />
       <ButtonsWrapper>
-        <Button text="가족 여행"></Button>
-        <Button text="커플 여행"></Button>
+        <SmallButton text="전체" />
+        <SmallButton text="가족 여행" />
+        <SmallButton text="커플 여행" />
       </ButtonsWrapper>
+      {/* 해시태그 영역 */}
       <MainCard cards={MainCardsData} />
       <ListTitle />
+      {/* 탑텐 데이터 전달 */}
       <MainList items={items} />
+      <SearchModal isOpen={isSearchModalOpen} onClose={toggleSearchModal} />
     </>
   );
 };
 
 export default Main;
+
+const ButtonsWrapper1 = styled.div`
+  width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  gap: 20px;
+  justify-content: center; /* 수평 가운데 정렬 */
+  align-items: center; /* 수직 가운데 정렬 */
+  height: 100px; /* 버튼을 중앙에 위치시키기 위한 높이 지정 */
+`;

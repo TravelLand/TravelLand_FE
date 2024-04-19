@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 const MyPageContainer = styled.div`
   display: flex;
@@ -54,20 +54,7 @@ const UserInfoContentName = styled.div`
   flex-direction: column;
 `;
 
-const MyPagePagination = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-
-  button {
-    padding: 10px;
-    cursor: pointer;
-
-    background-color: white;
-    border: none;
-  }
-`;
-
+// 아래 탭 스타일
 const MyPageTabStyle = styled.div`
   display: flex;
   flex-direction: row;
@@ -81,27 +68,30 @@ const MyPageButton = styled.div`
 `;
 
 const MyPageTabButton = styled.button<{ isActive: boolean }>`
-  justify-content: center;
-
-  background-color: white;
-  border: none;
-  border-radius: 5px;
-
-  font-size: 16px;
-  font-weight: bold;
-
-  /* width: 400px; */
-  height: 45px;
-
+  width: 110px;
   cursor: pointer;
+  font-size: 24px;
+  font-weight: 600;
+  padding: 60px 0 30px 0;
+  position: relative;
+  text-align: center;
 
-  ${({ isActive }) =>
-    isActive &&
-    css`
-      width: 150px;
-      border-bottom: 1px solid black;
-      /* color: white; */
-    `}
+  &.active::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -2px;
+    transform: translateX(-50%);
+    width: 100%;
+    border-bottom: 3px solid #000;
+  }
+`;
+
+const MyPlanListContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding-top: 30px;
 `;
 
 const MyPageInvitedContainer = styled.div`
@@ -111,6 +101,19 @@ const MyPageInvitedContainer = styled.div`
   grid-gap: 25px;
 `;
 
+const MyPagePagination = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  button {
+    padding: 10px;
+    cursor: pointer;
+
+    background-color: white;
+    border: none;
+  }
+`;
 export {
   UserInfoContentName,
   MyPageContainer,
@@ -121,5 +124,6 @@ export {
   MyPageButton,
   MyPageTabButton,
   MyPageInvitedContainer,
+  MyPlanListContainer,
   UserOtherInfoContainer,
 };
